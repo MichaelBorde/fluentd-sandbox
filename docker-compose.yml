@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  randolog:
+    image: golang
+    command: go run /usr/src/randolog/main.go
+    volumes:
+      - ./randolog/:/usr/src/randolog/
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "docker.{{.ID}}"
+
+  fluentd:
+    image: fluent/fluentd
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
