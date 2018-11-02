@@ -6,6 +6,7 @@ services:
     command: go run /usr/src/randolog/main.go
     volumes:
       - ./randolog/:/usr/src/randolog/
+    restart: always  
     logging:
       driver: fluentd
       options:
@@ -16,6 +17,7 @@ services:
     image: fluent/fluentd
     volumes:
       - ./fluent.conf:/fluentd/etc/fluent.conf
+      - ./logs/:/var/log/fluent
     ports:
       - "24224:24224"
       - "24224:24224/udp"
